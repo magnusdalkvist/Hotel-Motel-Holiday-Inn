@@ -39,7 +39,7 @@ export default function Account() {
         <div>
           <h2 className="text-2xl">Edit info</h2>
           <form className="flex flex-col items-start gap-2" onSubmit={updateUser}>
-            <div className="flex gap-4">
+            <div className="flex flex-wrap gap-4">
               <label htmlFor="firstName" className="flex flex-col">
                 First name
                 <input type="text" name="firstName" value={firstName} disabled />
@@ -61,7 +61,7 @@ export default function Account() {
             <input type="submit" value="Update info" />
           </form>
         </div>
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
           {profiles
             ?.find((profile) => profile.id == user?.id)
             .perks?.map((perk) => (

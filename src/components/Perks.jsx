@@ -19,7 +19,7 @@ export default function Perks() {
       {error ? (
         <p>{error.message}</p>
       ) : (
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid md:grid-cols-3 gap-4">
           {data
             ?.sort((a, b) => parseFloat(a.price) - parseFloat(b.price))
             .map((perk) => (

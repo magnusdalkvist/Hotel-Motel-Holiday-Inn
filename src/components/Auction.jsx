@@ -52,7 +52,7 @@ export default function Auction() {
         {}
         <input type="submit" value="Create auction" />
       </form>
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid md:grid-cols-3 gap-4">
         {data?.map((auction) => (
           <Auction auction={auction} key={auction.id} />
         ))}
