@@ -54,7 +54,7 @@ export default function Auction() {
       </form>
       <div className="grid grid-cols-3 gap-4">
         {data?.map((auction) => (
-          <Auction auction={auction} />
+          <Auction auction={auction} key={auction.id} />
         ))}
       </div>
     </div>
@@ -86,13 +86,13 @@ export default function Auction() {
         key={auction.id}
         className={clsx(
           "bg-[#333] rounded-xl p-4",
-          points < auction.price && user.id != auction.created_by && "opacity-50"
+          points < auction.price && user?.id != auction.created_by && "opacity-50"
         )}
       >
         <p>{auction.name}</p>
         <p>{auction.price}</p>
         <p>{profiles?.find((profile) => profile.id == auction.created_by)?.nickname}</p>
-        {auction.created_by == user.id ? (
+        {auction.created_by == user?.id ? (
           <button onClick={deleteAuction}>Delete</button>
         ) : (
           <button onClick={buyAuction} disabled={points < auction.price}>
