@@ -9,7 +9,9 @@ export function ProfilesProvider({ children }) {
   const [{ data: profiles, error, fetching }, reexecute] = useSelect("profiles");
   useEffect(() => {
     setState({
-      profiles: profiles?.sort((a, b) => a.first_name.localeCompare(b.first_name)),
+      profiles: profiles?.sort((a, b) =>
+        a.first_name?.toLowerCase() < b.first_name?.toLowerCase() ? -1 : 1
+      ),
       error,
       fetching,
     });
@@ -17,7 +19,7 @@ export function ProfilesProvider({ children }) {
 
   useSubscription(
     (payload) => {
-      console.log("Change received!", payload);
+      // console.log("Change received!", payload);
       reexecute();
     },
     {

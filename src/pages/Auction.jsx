@@ -3,6 +3,7 @@ import { useDelete, useInsert, useRealtime, useUpdate } from "react-supabase";
 import { useAuth } from "../hooks/Auth";
 import { useProfiles } from "../hooks/Profiles";
 import clsx from "clsx";
+import Loader from "../components/Loader";
 
 export default function Auction() {
   const { user } = useAuth();
@@ -10,14 +11,14 @@ export default function Auction() {
   const [name, setName] = useState("");
   const [price, setPrice] = useState(0);
   const [{ data, error, fetching }, reexecute] = useRealtime("auctions");
-  const [{}, execute] = useInsert("auctions");
+  const [{ fetching: fetchingInsert }, execute] = useInsert("auctions");
 
   const points = profiles?.find((data) => data.id == user?.id)?.points ?? 0;
 
   async function createAuction(event) {
     event.preventDefault();
-    console.log("createAuction");
-    const { count, data, error } = await execute({ name, price, created_by: user.id });
+    if (!user) return;
+    const { count, data, error } = await execute({ name, price, created_by: user?.id });
     if (!error) {
       setName("");
       setPrice(0);
@@ -33,6 +34,7 @@ export default function Auction() {
           className="w-full"
           type="text"
           name="name"
+          required
           onChange={(e) => setName(e.target.value)}
           value={name}
         />
@@ -50,23 +52,28 @@ export default function Auction() {
         />
         {price}
         {}
-        <input type="submit" value="Create auction" />
+        <input type="submit" value={fetchingInsert ? "Creating..." : "Create auction"} />
       </form>
-      <div className="grid md:grid-cols-3 gap-4">
-        {data?.map((auction) => (
-          <Auction auction={auction} key={auction.id} />
-        ))}
-      </div>
+      {fetching && <p>Loading...</p>}
+      {error ? (
+        <p>{error.message}</p>
+      ) : (
+        <div className="grid md:grid-cols-3 gap-4">
+          {data?.map((auction) => (
+            <Auction auction={auction} key={auction.id} />
+          ))}
+        </div>
+      )}
     </div>
   );
 
   function Auction({ auction }) {
-    const [{ fetching }, executeDelete] = useDelete("auctions");
+    const [{ fetching: fetchingDelete }, executeDelete] = useDelete("auctions");
     async function deleteAuction() {
       const { count, data, error } = await executeDelete((query) => query.eq("id", auction.id));
     }
 
-    const [{}, execute] = useUpdate("profiles");
+    const [{ fetching: fetchingBuy }, execute] = useUpdate("profiles");
     async function buyAuction() {
       await execute({ points: points - auction.price }, (query) => query.eq("id", user?.id));
       await execute(
@@ -93,10 +100,10 @@ export default function Auction() {
         <p>{auction.price}</p>
         <p>{profiles?.find((profile) => profile.id == auction.created_by)?.nickname}</p>
         {auction.created_by == user?.id ? (
-          <button onClick={deleteAuction}>Delete</button>
+          <button onClick={deleteAuction}>{fetchingDelete ? <Loader /> : "Delete"}</button>
         ) : (
           <button onClick={buyAuction} disabled={points < auction.price}>
-            Buy
+            {fetchingBuy ? <Loader /> : "Buy"}
           </button>
         )}
       </div>

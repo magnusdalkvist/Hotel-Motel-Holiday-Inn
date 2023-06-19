@@ -10,6 +10,7 @@ import Account from "./pages/Account";
 import { AuthProvider } from "./hooks/Auth";
 import Login from "./pages/Login";
 import { ProfilesProvider } from "./hooks/Profiles";
+import Auction from "./pages/Auction";
 
 const client = createClient(
   "https://fxrkypplzrbtfuemvgzn.supabase.co",
@@ -26,6 +27,7 @@ export default function App() {
               <Route path="/" element={<Layout />}>
                 <Route index element={<Home />} />
                 <Route path="/account" element={<Account />} />
+                <Route path="/auction" element={<Auction />} />
                 <Route path="/login" element={<Login />} />
               </Route>
             </Routes>

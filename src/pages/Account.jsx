@@ -1,16 +1,19 @@
-import { useClient, useRealtime, useSelect, useSignOut, useUpdate } from "react-supabase";
+import { useClient, useSelect, useSignOut, useUpdate } from "react-supabase";
 import { useAuth } from "../hooks/Auth";
 import { useEffect, useState } from "react";
 import { useProfiles } from "../hooks/Profiles";
+import Loader from "../components/Loader";
 
 export default function Account() {
   const client = useClient();
-  const [nickname, setNickname] = useState("");
   const { session, user } = useAuth();
-  const [{ error, fetching }, signOut] = useSignOut();
-  const [{}, execute] = useUpdate("profiles");
   const { profiles } = useProfiles();
+  const [nickname, setNickname] = useState("");
+  const [{ error }, signOut] = useSignOut();
+  const [{ fetching }, execute] = useUpdate("profiles");
   const [{ data: perks }] = useSelect("perks");
+  const [avatar, setAvatar] = useState(null);
+  const [fileName, setFileName] = useState(null);
 
   const firstName = profiles?.find((profile) => profile.id == user?.id)?.first_name;
   const lastName = profiles?.find((profile) => profile.id == user?.id)?.last_name;
@@ -20,15 +23,44 @@ export default function Account() {
     const { error } = await signOut();
   }
 
+  async function removeAvatar() {
+    await client.storage.from("avatars").remove([user.id + "/avatar"]);
+    setAvatar("avatar.webp");
+  }
+
   async function updateUser(e) {
     e.preventDefault();
+    let file = e.target.myFile.files[0];
     const { count, data, error } = await execute({ nickname }, (query) => query.eq("id", user.id));
+    const { error: fileError } = await client.storage
+      .from("avatars")
+      .upload(user.id + "/avatar", file, {
+        cacheControl: "3600",
+        upsert: false,
+      });
+    if (fileError) {
+      await client.storage.from("avatars").update(user.id + "/avatar", file, {
+        cacheControl: "3600",
+        upsert: false,
+      });
+    }
+
+    setAvatar(
+      `https://fxrkypplzrbtfuemvgzn.supabase.co/storage/v1/object/public/avatars/${
+        user?.id
+      }/avatar?cache=${Date.now()}`
+    );
   }
 
   useEffect(() => {
     if (profiles) {
       setNickname(profiles?.find((profile) => profile.id == user?.id)?.nickname);
-      console.log(profiles.find((profile) => profile.id == user?.id));
+      setAvatar(
+        `https://fxrkypplzrbtfuemvgzn.supabase.co/storage/v1/object/public/avatars/${
+          user?.id
+        }/avatar?cache=${Date.now()}`
+      );
+      console.log(fileName);
     }
   }, [profiles]);
 
@@ -36,29 +68,50 @@ export default function Account() {
     return (
       <div className="flex flex-col gap-4 items-start">
         <h1>Hej {currentNickname || firstName},</h1>
+        <div className="account-avatar" onClick={removeAvatar}>
+          <img
+            src={avatar}
+            className="w-full h-full object-cover aspect-square"
+            onError={({ currentTarget }) => (currentTarget.src = "avatar.webp")}
+          />
+        </div>
         <div>
           <h2 className="text-2xl">Edit info</h2>
           <form className="flex flex-col items-start gap-2" onSubmit={updateUser}>
             <div className="flex flex-wrap gap-4">
               <label htmlFor="firstName" className="flex flex-col">
                 First name
-                <input type="text" name="firstName" value={firstName} disabled />
+                <input type="text" name="firstName" id="firstName" value={firstName} disabled />
               </label>
               <label htmlFor="lastName" className="flex flex-col">
                 Last name
-                <input type="text" name="lastName" value={lastName} disabled />
+                <input type="text" name="lastName" id="lastName" value={lastName} disabled />
               </label>
-              <label htmlFor="lastName" className="flex flex-col">
+              <label htmlFor="nickname" className="flex flex-col">
                 Nickname
                 <input
                   type="text"
                   name="nickname"
+                  id="nickname"
                   value={nickname}
                   onChange={(e) => setNickname(e.target.value)}
                 />
               </label>
+              <div className="flex flex-col">
+                Profile picture
+                <label htmlFor="myFile" className="flex flex-col">
+                  {fileName ? fileName : "Upload image"}
+                  <input
+                    type="file"
+                    id="myFile"
+                    name="myFile"
+                    className="hidden"
+                    onChange={(e) => setFileName(e.target.files[0].name)}
+                  />
+                </label>
+              </div>
             </div>
-            <input type="submit" value="Update info" />
+            <button>{fetching ? <Loader /> : "Update info"}</button>
           </form>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
@@ -88,7 +141,7 @@ export default function Account() {
           {
             perks: updatedPerks,
           },
-          (query) => query.eq("id", user.id)
+          (query) => query.eq("id", user?.id)
         );
       }
       await execute(
@@ -98,7 +151,7 @@ export default function Account() {
               ? profiles?.find((profile) => profile.id == user?.id)?.points + perk.price / 2
               : profiles?.find((profile) => profile.id == user?.id)?.points + perk.price,
         },
-        (query) => query.eq("id", user.id)
+        (query) => query.eq("id", user?.id)
       );
     }
 

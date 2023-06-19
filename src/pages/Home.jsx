@@ -1,4 +1,3 @@
-import Auction from "../components/Auction";
 import Perks from "../components/Perks";
 import Users from "../components/Users";
 
@@ -8,7 +7,6 @@ export default function Home() {
       <h1>Home</h1>
       <Users />
       <Perks />
-      <Auction />
     </div>
   );
 }

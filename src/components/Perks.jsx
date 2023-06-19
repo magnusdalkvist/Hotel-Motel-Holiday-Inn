@@ -3,19 +3,19 @@ import { useAuth } from "../hooks/Auth";
 import clsx from "clsx";
 import { useProfiles } from "../hooks/Profiles";
 import { useState } from "react";
+import Loader from "./Loader";
 
 export default function Perks() {
   const { user } = useAuth();
   const { profiles } = useProfiles();
-  const [{ count, data, error, fetching }] = useSelect("perks");
-  const [{}, execute] = useUpdate("profiles");
+  const [{ count, data, error, fetching: fetchingPerks }] = useSelect("perks");
 
   const points = profiles?.find((data) => data.id == user?.id)?.points ?? 0;
 
   return (
     <div>
       <h2 className="text-2xl">Perks</h2>
-      {fetching && <p>Loading...</p>}
+      {fetchingPerks && <p>Loading...</p>}
       {error ? (
         <p>{error.message}</p>
       ) : (
@@ -31,6 +31,7 @@ export default function Perks() {
   );
 
   function Perk({ perk }) {
+    const [{ fetching: fetchingSend }, execute] = useUpdate("profiles");
     const [recipient, setRecipient] = useState("none");
 
     async function redeemPerk() {
@@ -54,7 +55,7 @@ export default function Perks() {
         <h3 className="text-xl">{perk.name}</h3>
         <p>{perk.price} point</p>
         <button onClick={redeemPerk} disabled={perk.price > points}>
-          Send
+          {fetchingSend ? <Loader /> : "Send"}
         </button>
         <select
           className="bg-[#333] p-3 rounded-lg"
@@ -67,7 +68,7 @@ export default function Perks() {
           </option>
           {profiles
             ?.filter((profile) => profile.id != user?.id)
-            .sort((a, b) => a.first_name.localeCompare(b.first_name))
+            // .sort((a, b) => a.first_name.localeCompare(b.first_name))
             .map((user) => (
               <option key={user.id} value={user.id}>
                 {user.nickname ? (

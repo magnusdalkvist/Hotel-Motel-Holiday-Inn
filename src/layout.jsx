@@ -12,7 +12,7 @@ export default function Layout() {
       <main className="flex-1">
         <Outlet profiles={profiles} />
       </main>
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 }
