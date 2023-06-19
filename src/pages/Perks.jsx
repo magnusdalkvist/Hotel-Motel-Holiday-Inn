@@ -3,7 +3,7 @@ import { useAuth } from "../hooks/Auth";
 import clsx from "clsx";
 import { useProfiles } from "../hooks/Profiles";
 import { useState } from "react";
-import Loader from "./Loader";
+import Loader from "../components/Loader";
 
 export default function Perks() {
   const { user } = useAuth();

@@ -10,6 +10,7 @@ export default function Nav() {
   return (
     <nav className="flex gap-4">
       <Link to="/">Home</Link>
+      <Link to="/perks">Perks</Link>
       <Link to="/auction">Auction</Link>
       {!user ? (
         <Link to="/login">Log in</Link>
