@@ -36,7 +36,7 @@ export default function Nav() {
     <>
       <nav className="flex px-4 sticky top-0 z-20 bg-[#242424] py-4 h-16 drop-shadow-[0_.5rem_5px_rgba(0,0,0,0.25)]">
         <div className="flex gap-4 justify-between items-center w-full max-w-[1250px] mx-auto">
-          <div className="h-8 sm:hidden cursor-pointer" onClick={() => setOpenMenu(!openMenu)}>
+          <div className="h-8 w-8 sm:hidden cursor-pointer" onClick={() => setOpenMenu(!openMenu)}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="currentColor"
