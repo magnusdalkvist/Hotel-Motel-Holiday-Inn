@@ -24,8 +24,8 @@ export default function Nav() {
   }, [openMenu]);
 
   useEffect(() => {
-    if (value == 20000) {
-      addPoints(1000);
+    if (value == 1000) {
+      addPoints(500);
     }
   }, [value]);
 
@@ -123,17 +123,17 @@ export default function Nav() {
             {value >= 10 && value < 50 && "Jeg ved du elsker clicker games hønse :D"}
             {value >= 50 && value < 69 && "Keep going!"}
             {value == 69 && "Nice"}
-            {value >= 70 && value < 2000 && "Keep going!"}
-            {value >= 2000 && value < 4000 && "Det er det hele værd"}
-            {value >= 4000 && value < 6000 && "Er du stadigvæk igang?"}
-            {value >= 6000 && value < 8000 && "Hvad mon der sker hvis du fortsætter"}
-            {value >= 8000 && value < 10000 && "Du er en trooper!"}
-            {value >= 10000 && value < 12000 && "Halvejs?"}
-            {value >= 12000 && value < 14000 && "Lets goooooo"}
-            {value >= 14000 && value < 16000 && "Du er en legende!"}
-            {value >= 16000 && value < 18000 && "Næsten der!"}
-            {value >= 18000 && value < 20000 && "Snart 1000!"}
-            {value >= 20000 && "Nyd dine 1000 point ;)"}
+            {value >= 70 && value < 100 && "Keep going!"}
+            {value >= 100 && value < 200 && "Det er det hele værd"}
+            {value >= 200 && value < 300 && "Er du stadigvæk igang?"}
+            {value >= 300 && value < 400 && "Hvad mon der sker hvis du fortsætter"}
+            {value >= 400 && value < 500 && "Du er en trooper!"}
+            {value >= 500 && value < 600 && "Halvejs?"}
+            {value >= 600 && value < 700 && "Lets goooooo"}
+            {value >= 700 && value < 800 && "Du er en legende!"}
+            {value >= 800 && value < 900 && "Næsten der!"}
+            {value >= 900 && value < 1000 && "Snart 1000!"}
+            {value >= 1000 && "Nyd dine 500 gratis point ;)"}
           </span>
           <span onClick={() => setValue(value + 1)}>{value}</span>
         </div>
