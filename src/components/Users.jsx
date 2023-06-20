@@ -71,7 +71,7 @@ export default function Users() {
                   </h3>
                 </div>
 
-                <div className="bottom-0 gap-2  left-0 px-4 py-2 right-0 flex flex-col h-full">
+                <div className="bottom-0 gap-2  left-0 p-4 pt-2 right-0 flex flex-col h-full">
                   <div className="flex flex-col gap-2">
                     <h2 className="font-bold">Udfordringer</h2>
                     <div className="grid grid-cols-2 gap-2">
