@@ -7,7 +7,7 @@ export default function Layout() {
   return (
     <>
       <Nav />
-      <main className="overscroll-contain flex-1 max-w-[1250px] mx-auto box-content p-4 pb-8">
+      <main className="flex-1 max-w-[1250px] mx-auto box-content p-4 pb-8">
         <Outlet />
       </main>
       {/* <Footer /> */}
