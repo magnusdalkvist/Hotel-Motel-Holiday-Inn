@@ -8,10 +8,10 @@ import Layout from "./layout";
 import Home from "./pages/Home";
 import Account from "./pages/Account";
 import { AuthProvider } from "./hooks/Auth";
-import Login from "./pages/Login";
+import SignIn from "./pages/SignIn";
 import { ProfilesProvider } from "./hooks/Profiles";
-import Auction from "./pages/Auction";
-import Perks from "./pages/Perks";
+import Auctions from "./pages/Auctions";
+import Challenges from "./pages/Challenges";
 
 const client = createClient(
   "https://fxrkypplzrbtfuemvgzn.supabase.co",
@@ -28,9 +28,9 @@ export default function App() {
               <Route path="/" element={<Layout />}>
                 <Route index element={<Home />} />
                 <Route path="/account" element={<Account />} />
-                <Route path="/auction" element={<Auction />} />
-                <Route path="perks" element={<Perks />} />
-                <Route path="/login" element={<Login />} />
+                <Route path="/auctions" element={<Auctions />} />
+                <Route path="challenges" element={<Challenges />} />
+                <Route path="/signin" element={<SignIn />} />
               </Route>
             </Routes>
           </ProfilesProvider>

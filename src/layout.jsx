@@ -4,13 +4,11 @@ import Footer from "./components/Footer";
 import { useRealtime } from "react-supabase";
 
 export default function Layout() {
-  const [{ data: profiles }] = useRealtime("profiles");
-
   return (
     <>
-      <Nav profiles={profiles} />
-      <main className="flex-1">
-        <Outlet profiles={profiles} />
+      <Nav />
+      <main className="flex-1 max-w-[1250px] mx-auto box-content p-4 pb-8">
+        <Outlet />
       </main>
       {/* <Footer /> */}
     </>
