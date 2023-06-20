@@ -25,7 +25,7 @@ export default function SignIn() {
   }
 
   return (
-    <div className="sign-in py-16">
+    <div className="sign-in pt-16">
       <form
         onSubmit={onSubmitSignIn}
         className="flex flex-col items-start gap-16 w-full items-center"
@@ -46,7 +46,7 @@ export default function SignIn() {
             <ellipse id="Ellipse_9" cx="71.667" cy="71.657" rx="71.667" ry="71.657" fill="none" />
           </svg>
         </div>
-        <div className="flex flex-col gap-4 items-center">
+        <div className="flex flex-col w-full gap-4 items-center">
           <label
             htmlFor="email"
             className="flex gap-3 items-center bg-white p-3 opacity-75 w-full max-w-[300px] rounded-full drop-shadow-[0_.5rem_5px_rgba(0,0,0,0.25)]"
