@@ -16,7 +16,7 @@ export default function Account() {
   const [{ fetching }, execute] = useUpdate("profiles");
   const [{ data: challenges }] = useSelect("challenges");
   const [avatar, setAvatar] = useState(null);
-  const [fileName, setFileName] = useState(null);
+  const [avatarURL, setAvatarURL] = useState("");
   const [open, setOpen] = useState(false);
 
   const firstName = profiles?.find((profile) => profile.id == user?.id)?.first_name;
@@ -28,42 +28,20 @@ export default function Account() {
   }
 
   async function removeAvatar() {
-    await client.storage.from("avatars").remove([user.id + "/avatar"]);
-    setAvatar("avatar.webp");
+    await execute({ avatar: "" }, (query) => query.eq("id", user.id));
   }
 
   async function updateUser(e) {
     e.preventDefault();
-    let file = e.target.myFile.files[0];
-    const { count, data, error } = await execute({ nickname }, (query) => query.eq("id", user.id));
-    const { error: fileError } = await client.storage
-      .from("avatars")
-      .upload(user.id + "/avatar", file, {
-        cacheControl: "3600",
-        upsert: false,
-      });
-    if (fileError) {
-      await client.storage.from("avatars").update(user.id + "/avatar", file, {
-        cacheControl: "3600",
-        upsert: false,
-      });
-    }
-    setFileName(null);
-    setAvatar(
-      `https://fxrkypplzrbtfuemvgzn.supabase.co/storage/v1/object/public/avatars/${
-        user?.id
-      }/avatar?cache=${Date.now()}&width=500&height=600&resize=cover&quality=75`
+    const { count, data, error } = await execute({ nickname, avatar: avatarURL }, (query) =>
+      query.eq("id", user.id)
     );
   }
 
   useEffect(() => {
     if (profiles) {
       setNickname(profiles?.find((profile) => profile.id == user?.id)?.nickname);
-      setAvatar(
-        `https://fxrkypplzrbtfuemvgzn.supabase.co/storage/v1/object/public/avatars/${
-          user?.id
-        }/avatar?cache=${Date.now()}&width=500&height=600&resize=cover&quality=75`
-      );
+      setAvatar(profiles?.find((profile) => profile.id == user?.id)?.avatar);
     }
   }, [profiles]);
 
@@ -75,11 +53,7 @@ export default function Account() {
             className="account-avatar aspect-square min-w-[100px] w-1/3 md:w-1/5 rounded-full overflow-hidden drop-shadow-[0_.5rem_5px_rgba(0,0,0,0.25)] "
             onClick={removeAvatar}
           >
-            <img
-              src={avatar}
-              className="w-full h-full object-cover bg-[#333]"
-              onError={({ currentTarget }) => (currentTarget.src = "avatar.webp")}
-            />
+            <img src={avatar || "avatar.webp"} className="w-full h-full object-cover bg-[#333]" />
           </div>
           <h1 className="font-bold text-5xl md:text-7xl  drop-shadow-[0_.5rem_5px_rgba(0,0,0,0.25)]">
             Hej {currentNickname || firstName},
@@ -135,23 +109,17 @@ export default function Account() {
                   onChange={(e) => setNickname(e.target.value)}
                 />
               </label>
-              <div className="flex flex-col">
-                Profilbillede
-                <label
-                  htmlFor="myFile"
-                  className="flex flex-col bg-[#333] px-4 py-2 text-center text-[#0ABE51] font-bold rounded-lg"
-                >
-                  {fileName ? fileName : "Upload"}
-                  <input
-                    type="file"
-                    id="myFile"
-                    name="myFile"
-                    className="hidden"
-                    accept="image/jpg, image/png, image/gif, image/jpeg"
-                    onInput={(e) => setFileName(e.target.files[0].name)}
-                  />
-                </label>
-              </div>
+              <label htmlFor="avatar" className="flex flex-col">
+                Profilbillede URL
+                <input
+                  type="text"
+                  name="avatar"
+                  id="avatar"
+                  className=""
+                  value={avatarURL}
+                  onChange={(e) => setAvatarURL(e.target.value)}
+                />
+              </label>
             </div>
             <button className="flex justify-center bg-[#0ABE51] hover:bg-[#08913f] p-3 rounded-full max-w-[200px] w-full font-bold text-[#242424] drop-shadow-[0_.5rem_5px_rgba(0,0,0,0.25)]">
               {fetching ? <Loader /> : "Opdater info"}

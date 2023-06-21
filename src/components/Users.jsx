@@ -40,9 +40,7 @@ export default function Users() {
       ) : (
         <div className="grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] lg:grid-cols-4 gap-x-4 gap-y-8">
           {profiles?.sort(sorting).map((user) => {
-            const img = `https://fxrkypplzrbtfuemvgzn.supabase.co/storage/v1/object/public/avatars/${
-              user.id
-            }/avatar?cache=${Date.now()}&width=500&height=600&resize=cover&quality=75`;
+            const img = user.avatar ?? "avatar.webp";
             const challenges = user.challenges.length;
             const completed = user.completed ?? 0;
 
