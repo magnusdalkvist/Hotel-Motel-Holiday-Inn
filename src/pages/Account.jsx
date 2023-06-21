@@ -52,7 +52,7 @@ export default function Account() {
     setAvatar(
       `https://fxrkypplzrbtfuemvgzn.supabase.co/storage/v1/object/public/avatars/${
         user?.id
-      }/avatar?cache=${Date.now()}`
+      }/avatar?cache=${Date.now()}&width=500&height=600&resize=cover&quality=75`
     );
   }
 
@@ -62,7 +62,7 @@ export default function Account() {
       setAvatar(
         `https://fxrkypplzrbtfuemvgzn.supabase.co/storage/v1/object/public/avatars/${
           user?.id
-        }/avatar?cache=${Date.now()}`
+        }/avatar?cache=${Date.now()}&width=500&height=600&resize=cover&quality=75`
       );
     }
   }, [profiles]);

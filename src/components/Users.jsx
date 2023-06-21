@@ -42,7 +42,7 @@ export default function Users() {
           {profiles?.sort(sorting).map((user) => {
             const img = `https://fxrkypplzrbtfuemvgzn.supabase.co/storage/v1/object/public/avatars/${
               user.id
-            }/avatar?cache=${Date.now()}`;
+            }/avatar?cache=${Date.now()}&width=500&height=600&resize=cover&quality=75`;
             const challenges = user.challenges.length;
             const completed = user.completed ?? 0;
 
