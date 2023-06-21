@@ -49,11 +49,10 @@ export default function Account() {
     return (
       <div className="max-w-[1250px] mx-auto  w-full flex flex-col gap-8 pt-16 items-center">
         <div className="w-full flex flex-col gap-4 items-center">
-          <div
-            className="account-avatar aspect-square min-w-[100px] w-1/3 md:w-1/5 rounded-full overflow-hidden drop-shadow-[0_.5rem_5px_rgba(0,0,0,0.25)] "
-            onClick={removeAvatar}
-          >
-            <img src={avatar || "avatar.webp"} className="w-full h-full object-cover bg-[#333]" />
+          <div className="w-1/3 md:w-1/5 aspect-square min-w-[100px] drop-shadow-[0_.5rem_5px_rgba(0,0,0,0.25)]">
+            <div className="account-avatar rounded-full overflow-hidden" onClick={removeAvatar}>
+              <img src={avatar || "avatar.webp"} className="w-full h-full object-cover bg-[#333]" />
+            </div>
           </div>
           <h1 className="font-bold text-5xl md:text-7xl  drop-shadow-[0_.5rem_5px_rgba(0,0,0,0.25)]">
             Hej {currentNickname || firstName},
