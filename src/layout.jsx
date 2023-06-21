@@ -7,7 +7,7 @@ export default function Layout() {
   return (
     <>
       <Nav />
-      <main className="max-w-[1250px] mx-auto w-full p-4 pb-8">
+      <main className="max-w-[1250px] mx-auto w-full box-content p-4 pb-8">
         <Outlet />
       </main>
       {/* <Footer /> */}
