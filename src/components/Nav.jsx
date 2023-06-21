@@ -118,7 +118,7 @@ export default function Nav() {
             Auktioner
           </Link>
         </div>
-        <div className="text-xs p-4 flex flex-col gap-2 items-center">
+        <div className="text-xs p-4 flex flex-col gap-2 items-center select-none cursor-pointer">
           <span>
             {value >= 10 && value < 50 && "Jeg ved du elsker clicker games hønse :D"}
             {value >= 50 && value < 69 && "Keep going!"}

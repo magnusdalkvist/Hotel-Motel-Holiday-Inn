@@ -26,7 +26,7 @@ export default function Auctions() {
   }
 
   return (
-    <div className="flex flex-col gap-8">
+    <div className="max-w-[1250px] mx-auto flex flex-col gap-8 w-full">
       <div>
         <h1 className="mb-8 font-bold text-5xl md:text-7xl  drop-shadow-[0_.5rem_5px_rgba(0,0,0,0.25)]">
           Auktioner

@@ -25,7 +25,7 @@ export default function SignIn() {
   }
 
   return (
-    <div className="sign-in pt-16">
+    <div className="max-w-[1250px] mx-auto w-full sign-in pt-16">
       <form
         onSubmit={onSubmitSignIn}
         className="flex flex-col items-start gap-16 w-full items-center"
