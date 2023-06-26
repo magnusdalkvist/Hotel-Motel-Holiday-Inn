@@ -22,6 +22,7 @@ export default function Account() {
   const firstName = profiles?.find((profile) => profile.id == user?.id)?.first_name;
   const lastName = profiles?.find((profile) => profile.id == user?.id)?.last_name;
   const currentNickname = profiles?.find((profile) => profile.id == user?.id)?.nickname;
+  const currentAvatar = profiles?.find((profile) => profile.id == user?.id)?.avatar;
 
   async function onClickSignOut() {
     const { error } = await signOut();
@@ -41,7 +42,7 @@ export default function Account() {
   useEffect(() => {
     if (profiles) {
       setNickname(profiles?.find((profile) => profile.id == user?.id)?.nickname);
-      setAvatar(profiles?.find((profile) => profile.id == user?.id)?.avatar);
+      setAvatarURL(profiles?.find((profile) => profile.id == user?.id)?.avatar);
     }
   }, [profiles]);
 
@@ -51,10 +52,13 @@ export default function Account() {
         <div className="w-full flex flex-col gap-4 items-center">
           <div className="w-1/3 md:w-1/5 aspect-square min-w-[100px] drop-shadow-[0_.5rem_5px_rgba(0,0,0,0.25)]">
             <div className="account-avatar rounded-full overflow-hidden" onClick={removeAvatar}>
-              <img src={avatar || "avatar.webp"} className="w-full h-full object-cover bg-[#333]" />
+              <img
+                src={currentAvatar || "avatar.webp"}
+                className="w-full h-full object-cover bg-[#333]"
+              />
             </div>
           </div>
-          <h1 className="font-bold text-5xl md:text-7xl  drop-shadow-[0_.5rem_5px_rgba(0,0,0,0.25)]">
+          <h1 className="font-bold text-5xl md:text-7xl text-center drop-shadow-[0_.5rem_5px_rgba(0,0,0,0.25)]">
             Hej {currentNickname || firstName},
           </h1>
         </div>
@@ -126,17 +130,20 @@ export default function Account() {
           </form>
         </div>
         {profiles?.find((profile) => profile.id == user?.id).challenges.length > 0 && (
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-            {profiles
-              ?.find((profile) => profile.id == user?.id)
-              .challenges?.map((challenge, i) => (
-                <Challenge challenge={challenge} key={i} />
-              ))}
+          <div className="flex flex-col gap-4">
+            <h3 className="text-xl">Udfordringer</h3>
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+              {profiles
+                ?.find((profile) => profile.id == user?.id)
+                .challenges?.map((challenge, i) => (
+                  <Challenge challenge={challenge} key={i} />
+                ))}
+            </div>
           </div>
         )}
         <button
           onClick={onClickSignOut}
-          className="bg-[#333] p-3 rounded-full max-w-[200px] w-full font-bold drop-shadow-[0_.5rem_5px_rgba(0,0,0,0.25)]"
+          className="bg-[#333] p-3 rounded-full max-w-[200px] hover:bg-[#0ABE51] active:bg-[#08913f] hover:text-[#242424] transition duration-300 w-full font-bold drop-shadow-[0_.5rem_5px_rgba(0,0,0,0.25)]"
         >
           Log ud
         </button>
@@ -146,6 +153,7 @@ export default function Account() {
 
   function Challenge({ challenge }) {
     const [{ fetching }, execute] = useUpdate("profiles");
+
     async function redeemChallenge() {
       const profile = profiles?.find((profile) => profile.id === user?.id);
       const index =

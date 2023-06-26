@@ -10,18 +10,20 @@ export default function Auctions() {
   const { profiles } = useProfiles();
   const [name, setName] = useState("");
   const [price, setPrice] = useState();
-  const [{ data, error, fetching }, reexecute] = useRealtime("auctions");
+  const [{ data: auctionsData, error, fetching }, reexecute] = useRealtime("auctions");
   const [{ fetching: fetchingInsert }, execute] = useInsert("auctions");
 
   const points = profiles?.find((data) => data.id == user?.id)?.points ?? 0;
 
   async function createAuction(event) {
     event.preventDefault();
+    if (auctionsData?.find((auction) => auction.created_by == user?.id))
+      return alert("Du har allerede en auktion");
     if (!user) return;
-    const { count, data, error } = await execute({ name, price, created_by: user?.id });
+    const { count, data, error } = await execute({ name, price: price || 0, created_by: user?.id });
     if (!error) {
       setName("");
-      setPrice(0);
+      setPrice("");
     }
   }
 
@@ -49,7 +51,7 @@ export default function Auctions() {
             <input
               className="w-[8ch] text-[rgba(255,255,255,0.87)]"
               pattern="\d*"
-              maxlength="4"
+              maxLength="4"
               name="price"
               id="price"
               placeholder="0"
@@ -67,7 +69,7 @@ export default function Auctions() {
         <p>{error.message}</p>
       ) : (
         <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {data?.map((auction) => (
+          {auctionsData?.map((auction) => (
             <Auction auction={auction} key={auction.id} />
           ))}
         </div>
@@ -108,7 +110,7 @@ export default function Auctions() {
         <div>
           <p>Pris: {auction.price} point</p>
           <p>
-            Created by: {profiles?.find((profile) => profile.id == auction.created_by)?.first_name}{" "}
+            Oprettet af: {profiles?.find((profile) => profile.id == auction.created_by)?.first_name}{" "}
             {profiles?.find((profile) => profile.id == auction.created_by)?.last_name}
           </p>
         </div>

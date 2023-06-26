@@ -76,7 +76,7 @@ export default function SignIn() {
               </g>
             </svg>
             <input
-              className="opacity-75   placeholder:text-black"
+              className="opacity-75 flex-1 placeholder:text-black"
               type="email"
               name="email"
               placeholder="email"

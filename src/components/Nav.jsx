@@ -14,14 +14,20 @@ export default function Nav() {
   const [openMenu, setOpenMenu] = useState(false);
   const [value, setValue] = useState(0);
   const [{ fetching }, execute] = useUpdate("profiles");
+  const [width, setWidth] = useState(window.innerWidth);
 
   useEffect(() => {
-    if (openMenu) {
+    window.addEventListener("resize", () => setWidth(window.innerWidth));
+  }, []);
+
+  useEffect(() => {
+    if (openMenu && width < 640) {
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "unset";
+      setOpenMenu(false);
     }
-  }, [openMenu]);
+  }, [openMenu, width]);
 
   useEffect(() => {
     if (value == 1000) {
@@ -44,7 +50,7 @@ export default function Nav() {
               viewBox="0 0 16 16"
             >
               <path
-                fill-rule="evenodd"
+                fillRule="evenodd"
                 d="M2.5 11.5A.5.5 0 0 1 3 11h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4A.5.5 0 0 1 3 7h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4A.5.5 0 0 1 3 3h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"
               />
             </svg>
@@ -82,7 +88,7 @@ export default function Nav() {
       </nav>
       <div
         className={clsx(
-          "bg-[#333] gap-8 fixed inset-0 z-10 transition-all duration-500 mt-16 flex flex-col items-center justify-between pt-16",
+          "bg-[#333] sm:hidden gap-8 fixed inset-0 z-10 transition-all duration-500 mt-16 flex flex-col items-center justify-between pt-16",
           !openMenu && "-translate-y-full"
         )}
       >
@@ -122,7 +128,7 @@ export default function Nav() {
           <span>
             {value >= 10 && value < 50 && "Jeg ved du elsker clicker games hønse :D"}
             {value >= 50 && value < 69 && "Keep going!"}
-            {value == 69 && "Nice"}
+            {value == 69 && "Nice ;)"}
             {value >= 70 && value < 100 && "Keep going!"}
             {value >= 100 && value < 200 && "Det er det hele værd"}
             {value >= 200 && value < 300 && "Er du stadigvæk igang?"}
