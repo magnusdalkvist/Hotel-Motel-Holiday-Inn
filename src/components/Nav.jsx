@@ -30,7 +30,7 @@ export default function Nav() {
   }, [openMenu, width]);
 
   useEffect(() => {
-    if (value == 100000) {
+    if (value == 10000) {
       addPoints(1000);
     }
   }, [value]);
@@ -139,7 +139,7 @@ export default function Nav() {
             {value >= 700 && value < 800 && "Du er en legende!"}
             {value >= 800 && value < 900 && "Næsten der!"}
             {value >= 900 && value < 1000 && "Snart 1000!"}
-            {value >= 100000 && "Nyd dine 1000 gratis point ;)"}
+            {value >= 10000 && "Nyd dine 1000 gratis point ;)"}
           </span>
           <span onClick={() => setValue(value + 1)}>{value}</span>
         </div>
