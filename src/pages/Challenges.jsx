@@ -38,13 +38,14 @@ export default function Challenges() {
 
     async function redeemChallenge() {
       if (recipient == "none") return;
-      await execute({ points: points - challenge.price }, (query) => query.eq("id", user?.id));
+      await execute({ points: points - challenge.price, filter: user?.id }, (query) => query.eq("id", user?.id));
       await execute(
         {
           challenges: [
             ...profiles.find((profile) => profile.id == recipient).challenges,
             { type: "challenge", ...challenge, from: user?.id },
           ],
+          filter: user?.id
         },
         (query) => query.eq("id", recipient)
       );

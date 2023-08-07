@@ -20,7 +20,7 @@ export default function Auctions() {
     if (auctionsData?.find((auction) => auction.created_by == user?.id))
       return alert("Du har allerede en auktion");
     if (!user) return;
-    const { count, data, error } = await execute({ name, price: price || 0, created_by: user?.id });
+    const { count, data, error } = await execute({ name, price: price || 0, created_by: user?.id, filter: user?.id });
     if (!error) {
       setName("");
       setPrice("");
@@ -85,13 +85,14 @@ export default function Auctions() {
 
     const [{ fetching: fetchingBuy }, execute] = useUpdate("profiles");
     async function buyAuction() {
-      await execute({ points: points - auction.price }, (query) => query.eq("id", user?.id));
+      await execute({ points: points - auction.price, filter: user?.id }, (query) => query.eq("id", user?.id));
       await execute(
         {
           challenges: [
             ...profiles.find((profile) => profile.id == auction.created_by).challenges,
             { type: "auction", ...auction, from: user?.id },
           ],
+          filter: user?.id
         },
         (query) => query.eq("id", auction.created_by)
       );
