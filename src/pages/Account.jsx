@@ -171,7 +171,6 @@ export default function Account() {
           {
             challenges: updatedChallenges,
             completed: profile.completed + 1,
-            filter: user?.id,
             points:
               challenge.type == "challenge"
                 ? profiles?.find((profile) => profile.id == user?.id)?.points + challenge.price / 2
